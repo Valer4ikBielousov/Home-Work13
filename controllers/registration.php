@@ -1,9 +1,29 @@
 <?php
 session_start();
-require __DIR__.'/../functions/functions.php';
+require_once __DIR__ . '/../functions/functions.php';
+require_once __DIR__ . '/../validation.php';
 
-if ($_SERVER['REQUEST_METHOD'] !== 'POST'){
-  $_SESSION['alerts'] = 'Method not allowed!';
-  header ('location: http://validation');
+// set REQUEST_METHOD errors into Session
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    setAlerts('Method not allowed!', 'warnings');
+    header('location: http://home-work13');
 }
+$bugName = [
+    'Name' => 'required|min_lenghth[2]|max_lenghth[15]',
+    'lastName' => 'required|min_lenghth[2]|max_lenghth[15]',
+    'email' => 'required|email|min_lenghth[6]|max_lenghth[15]',
+    'password' => 'required|min_lenghth[4]|max_lenghth[25]|symbol',
+    'confirmPassword' => 'required|confirmPassword'
+];
 
+// set validation errors messages into Session
+
+$bugArray = validation($_POST, $bugName);
+foreach ($bugArray as $bugField => $bugindex) {
+    if (isset($bugindex)) {
+        foreach ($bugindex as $bugMassages) {
+            setAlerts($bugMassages, $bugField);
+        }
+        header('location: http://home-work13');
+    }
+}

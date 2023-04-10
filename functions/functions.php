@@ -1,24 +1,56 @@
 <?php
-function debug(array $array)
+/**
+ * Just for debug arrays
+ * @param array $array
+ * @return void
+ */
+function debug(array $array): void
 {
     echo '<pre>';
     print_r($array);
     echo '</pre>';
+    exit;
 }
 
-function setAlerts(string $messeges, string $type = 'alerts')
+/**
+ *set my message into SESSIONS
+ * @param string $messege
+ * @param string|array $type
+ */
+function setAlerts(string $messege, string|array $type = 'alerts'): void
 {
-    $_SESSION[$type][] = $messeges;
+    $_SESSION[$type][] = $messege;
+
 }
 
-function getMesseges($type)
+/**
+ *Get my message from session
+ * @param string|array $type
+ * @return array
+ */
+function getMesseges(string $type): array
 {
     $messeges = $_SESSION[$type] ?? [];
-    unset ($_SESSION[$type]);
-    return  $messeges;
+
+    return $messeges;
 }
 
-function existMesseges (string $type): bool
+/**
+ *check if session for $type exist
+ * @param string|array $type
+ * @return bool
+ */
+function existMesseges(string $type): bool
 {
     return isset($_SESSION[$type]);
+}
+
+/**
+ * unset old messeges from screen
+ * @param string $type
+ * @return void
+ */
+function unsetMesseges(string $type):void
+{
+    unset ($_SESSION[$type]);
 }

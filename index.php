@@ -1,8 +1,8 @@
 <?php
-require __DIR__.'./functions/functions.php';
-
 session_start();
-print_r (getMesseges('Warning'));
+require __DIR__ . '/functions/functions.php';
+
+
 ?>
 <!doctype html>
 <html lang="en">
@@ -15,19 +15,44 @@ print_r (getMesseges('Warning'));
 </head>
 <body>
 <div class="container text-center" style=" margin-top: 200px;">
+    <?php if (existMesseges('warnings')) { ?>
+        <div class="alert alert-danger" role="alert">
+            <?php
+            foreach (getMesseges('warnings') as $warning) {
+                echo "$warning<br>";
+            } ?>
+        </div>
+    <?php } ?>
     <div class="shadow-lg p-3 mb-5 bg-body rounded">
         <div class="p-3 mb-2 bg-secondary text-white">
             <h1>Registration form</h1>
         </div>
-        <form  action="controllers/registration.php" method="POST">
+        <form action="controllers/registration.php" method="POST">
             <div class="row g-3">
-
                 <div class="col" style=" margin-top: 20px; margin-bottom: 20px ">
-                    <input type="text" name="name" class="form-control" placeholder="First name"
+                    <?php if (existMesseges('Name')) { ?>
+                        <div class="alert alert-danger" role="alert">
+                            <?php
+                            foreach ((getMesseges('Name')) as $bugMassage) {
+                                echo "$bugMassage<br>";
+//                                unsetMesseges('Name');
+                            } ?>
+                        </div>
+                    <?php } ?>
+                    <input type="text" name="Name" class="form-control" placeholder="First name"
                            aria-label="First name">
                 </div>
                 <div class="col" style=" margin-bottom: 20px">
-                    <input type="text" name="lastname" class="form-control" placeholder="Last name"
+                    <?php if (existMesseges('lastName')) { ?>
+                        <div class="alert alert-danger" role="alert">
+                            <?php
+                            foreach ((getMesseges('lastName')) as $bugMassage) {
+                                echo "$bugMassage<br>";
+//                                unsetMesseges('lastName');
+                            } ?>
+                        </div>
+                    <?php } ?>
+                    <input type="text" name="lastName" class="form-control" placeholder="Last name"
                            aria-label="Last name">
                 </div>
             </div>
@@ -35,19 +60,58 @@ print_r (getMesseges('Warning'));
             <div class="row mb-3">
                 <label for="inputEmail3" class="col-sm-2 col-form-label">Email</label>
                 <div class="col-sm-10">
-                    <input type="email" name = "email" class="form-control" id="inputEmail3">
+                    <?php if (existMesseges('email')) { ?>
+
+                        <div class="alert alert-danger" role="alert">
+                            <?php
+                            foreach ((getMesseges('email')) as $bugMassage) {
+                                echo "$bugMassage<br>";
+                            }
+                            ?>
+                        </div>
+                    <?php }
+                     ?>
+                    <input type="text" name="email" class="form-control" id="inputEmail3">
                 </div>
             </div>
             <div class="row mb-3">
                 <label for="inputPassword3" class="col-sm-2 col-form-label">Password</label>
                 <div class="col-sm-10">
-                    <input type="password" name = "password" class="form-control" id="inputPassword3">
+                     <?php if (existMesseges('password')) { ?>
+
+                        <div class="alert alert-danger" role="alert">
+                            <?php
+                            foreach ((getMesseges('password')) as $bugMassage) {
+                                echo "$bugMassage<br>";
+                            }
+                            ?>
+                        </div>
+                    <?php }
+                     ?>
+                    <input type="password" name="password" class="form-control" id="inputPassword3">
                 </div>
             </div>
             <div class="row mb-3">
-                <label for="inputPassword4"  class="col-sm-2 col-form-label">Confirm password</label>
+                <label for="inputPassword4" class="col-sm-2 col-form-label">Confirm password</label>
                 <div class="col-sm-10">
-                    <input type="password" name = "confirmPassword" class="form-control" id="inputPassword4">
+                    <?php if (existMesseges('confirmPassword')) { ?>
+
+                        <div class="alert alert-danger" role="alert">
+                            <?php
+                            foreach ((getMesseges('confirmPassword')) as $bugMassage) {
+                                echo "$bugMassage<br>";
+                            }
+                            ?>
+                        </div>
+                    <?php }
+                    unsetMesseges('email');
+                    unsetMesseges('Name');
+                    unsetMesseges('lastName');
+                    unsetMesseges('password');
+                    unsetMesseges('confirmPassword');
+                    unsetMesseges('warnings');
+                    ?>
+                    <input type="password" name="confirmPassword" class="form-control" id="inputPassword4">
                 </div>
             </div>
             <button type="submit" class="btn btn-secondary">Sign in</button>
