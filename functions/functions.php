@@ -54,3 +54,13 @@ function unsetMesseges(string $type):void
 {
     unset ($_SESSION[$type]);
 }
+
+/**
+ * check if user was regestrated
+ * @param $key
+ * @return array|bool
+ */
+function chekAuth($key):array|bool
+{
+    return $_COOKIE[$key] ?? false;
+}

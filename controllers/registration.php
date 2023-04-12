@@ -27,3 +27,6 @@ foreach ($bugArray as $bugField => $bugindex) {
         header('location: http://home-work13');
     }
 }
+
+//registration
+setcookie('auth', true, time() + 3600 * 24 * 7,'/');
