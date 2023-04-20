@@ -71,6 +71,17 @@ require __DIR__ . '/functions/functions.php';
                         </div>
                     <?php }
                      ?>
+                    <?php if (existMesseges('warn')) { ?>
+
+                        <div class="alert alert-danger" role="alert">
+                            <?php
+                            foreach ((getMesseges('warn')) as $warn) {
+                                echo "$warn<br>";
+                            }
+                            ?>
+                        </div>
+                    <?php }
+                    ?>
                     <input type="text" name="email" class="form-control" id="inputEmail3">
                 </div>
             </div>
@@ -110,6 +121,7 @@ require __DIR__ . '/functions/functions.php';
                     unsetMesseges('password');
                     unsetMesseges('confirmPassword');
                     unsetMesseges('warnings');
+                    unsetMesseges('warn');
                     ?>
                     <input type="password" name="confirmPassword" class="form-control" id="inputPassword4">
                 </div>

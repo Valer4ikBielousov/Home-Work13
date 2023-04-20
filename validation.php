@@ -1,5 +1,8 @@
 <?php
-function validation(array $fields, array $rules)
+// require from database "bloger" with PHP (PDO) on mySQL
+
+
+function validation(array $fields, array $rules,)
 {
     $errors=[];
     if (!$rules)
@@ -31,14 +34,17 @@ function validation(array $fields, array $rules)
                     $errors[$fieldName][] = "Field '$fieldName' must be shortest then $length2";
                 }
             }
-            //email validation rules
+            //email validation rules chek free password
             if ($rule === 'email') {
                 if (emailValidation("/^[a-zA-Z0-9_\.\-]+@[a-zA-Z0-9\-]+\.[a-zA-Z\-\.]+$/Du", $fields['email']) > 0) {
                     $errors['email'][] = "In field '$fieldName' must be used this form |A-Z.a-z,0-9,_,-,|@|A-Z.a-z,0-9|.|a-z|";
                 }
+
             }
             //chek used symbols in password
             if ($rule === 'symbol') {
+
+
                 if ((chekPaswword("^\S*(?=\S{0,25})(?=\S*[a-z])(?=\S*[A-Z])(?=\S*[\d])\S*$^", $fields['password']) > 0)) {
                     $errors['password'][] = "Must use at least one lowercase, one uppercase letter and at least one number";
                 }

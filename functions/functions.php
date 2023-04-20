@@ -64,3 +64,11 @@ function chekAuth($key):array|bool
 {
     return $_COOKIE[$key] ?? false;
 }
+
+function freeEmailchek(string $newEmail, string $userEmail): bool
+{
+    if ($newEmail !== $userEmail){
+        return true;
+    }
+    return false;
+}
