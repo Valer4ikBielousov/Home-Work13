@@ -2,7 +2,7 @@
 session_start();
 require __DIR__ . '/functions/functions.php';
 
-if (!(chekAuth('auth'))){
+if (!(chekAuth('auth'))) {
     header('location: http://home-work13');
 }
 
@@ -18,7 +18,7 @@ if (!(chekAuth('auth'))){
 </head>
 <body>
 <div class="container text-center" style=" margin-top: 200px;">
-      <div class="shadow-lg p-3 mb-5 bg-body rounded">
+    <div class="shadow-lg p-3 mb-5 bg-body rounded">
         <div class="p-3 mb-2 bg-secondary text-white">
             <h1>Closed content</h1>
         </div>

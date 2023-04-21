@@ -1,10 +1,11 @@
 <?php
+
 // require from database "bloger" with PHP (PDO) on mySQL
+require_once __DIR__ . "/../db.php";
 
-
-function validation(array $fields, array $rules,)
+function validation(array $fields, array $rules, $savedEmail)
 {
-    $errors=[];
+    $errors = [];
     if (!$rules)
         return false;
 
@@ -53,6 +54,12 @@ function validation(array $fields, array $rules,)
             if ($rule === 'confirmPassword') {
                 if (confirmPassword($fields['password'], $fields['confirmPassword'])) {
                     $errors['confirmPassword'][] = "Password not confirm";
+                }
+            }
+            // chek if email free
+            if ($rule === 'freeEmail') {
+                if (chekfreeEmail($fields['email'], $savedEmail)) {
+                    $errors['email'][] = 'Not free email! Try again!';
                 }
             }
 
@@ -150,5 +157,20 @@ function confirmPassword(string $password, string $passwordConfirm): bool
     return false;
 }
 
+/** check if email exist in database blogers
+ * @param string $newEmail
+ * @param class-string $savedEmail
+ * @return bool
+ */
+function chekfreeEmail($newEmail, $savedEmail)
+{
+    $query = "SELECT `email` FROM `users` WHERE `email` = ?";
+    $stmt = $savedEmail->prepare($query);
+    $stmt->execute([$newEmail]);
+    if ($stmt->rowCount() > 0) {
+        return true;
+    }
+    return false;
+}
 
 
