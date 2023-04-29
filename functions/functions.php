@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Just for debug arrays
  * @param array $array
@@ -65,10 +66,23 @@ function chekAuth($key):array|bool
     return $_COOKIE[$key] ?? false;
 }
 
-function freeEmailchek(string $newEmail, string $userEmail): bool
+
+/** Set value of Field Name into session
+ * @param array $F
+ * @param string $type_F
+ * @return void
+ */
+function setF(array $F, string $type_F): void
 {
-    if ($newEmail !== $userEmail){
-        return true;
-    }
-    return false;
+    $_SESSION[$type_F] = $F;
+}
+
+/** Get value of Field Name into session
+ * @param string $type_F
+ * @param string $key
+ * @return string
+ */
+function getF(string $type_F,string $key) :string
+{
+    return $_SESSION[$type_F][$key] ?? '';
 }

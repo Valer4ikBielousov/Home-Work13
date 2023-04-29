@@ -2,15 +2,23 @@
 session_start();
 require_once __DIR__ . '/../functions/functions.php';
 require_once __DIR__ . '/../functions/validation.php';
+require_once __DIR__ . '/../config.php';
+require_once __DIR__ . '/../database_functions.php';
 
 // require from database "bloger" with PHP (PDO) on mySQL
 require_once __DIR__ . "/../db.php";
 
+
 // set REQUEST_METHOD errors into Session
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     setAlerts('Method not allowed!', 'warnings');
-    header('location: http://home-work13');
+    header('location:' . SITE_REGISTRATION);
 }
+
+//Set value of Field Name into session
+setF($_POST, 'registration_form');
+
+//declare a type of errors on validation form
 $bugName = [
     'Name' => 'required|min_lenghth[2]|max_lenghth[15]',
     'lastName' => 'required|min_lenghth[2]|max_lenghth[15]',
@@ -28,20 +36,22 @@ foreach ($bugArray as $bugField => $bugindex) {
         foreach ($bugindex as $bugMassages) {
             setAlerts($bugMassages, $bugField);
         }
-        header('location: http://home-work13');
+        header('location:' . SITE_REGISTRATION);
         exit;
     }
 }
+$userData = [
+    'name' => $_POST['Name'],
+    'email' => $_POST['email'],
+    'password' => password_hash($_POST['password'], PASSWORD_BCRYPT)
+];
 
 
 // save new user
-$sql = 'INSERT INTO `users` (`name`, `email`, `password`) 
-        VALUES("' . $_POST['Name'] . '", "' . $_POST['email'] . '", "' . $_POST['password'] . '")';
-$statement = $bloger->query($sql);
 
-// set cookie  new user
-setcookie('auth', true, time() + 3600 * 24 * 7, '/');
+registrationUser ( $bloger, $userData);
 // redirect to closed page
-header('location: http://home-work13/closed.php');
+
+header('location:' . SITE_CLOSED);
 
 

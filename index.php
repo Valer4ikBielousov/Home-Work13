@@ -1,7 +1,7 @@
 <?php
 session_start();
 require __DIR__ . '/functions/functions.php';
-
+//require_once __DIR__ . '/controllers/registration.php';
 
 ?>
 <!doctype html>
@@ -39,8 +39,9 @@ require __DIR__ . '/functions/functions.php';
                             } ?>
                         </div>
                     <?php } ?>
-                    <input type="text" name="Name" class="form-control" placeholder="First name"
-                           aria-label="First name">
+                    <input type="text" name="Name" class="form-control"
+                           value="<?= getF('registration_form','Name')?>"
+                           aria-label="First name" placeholder="First name">
                 </div>
                 <div class="col" style=" margin-bottom: 20px">
                     <?php if (existMesseges('lastName')) { ?>
@@ -53,7 +54,7 @@ require __DIR__ . '/functions/functions.php';
                         </div>
                     <?php } ?>
                     <input type="text" name="lastName" class="form-control" placeholder="Last name"
-                           aria-label="Last name">
+                           value="<?= getF('registration_form','lastName')?>" aria-label="Last name">
                 </div>
             </div>
 
@@ -71,7 +72,8 @@ require __DIR__ . '/functions/functions.php';
                         </div>
                     <?php }
                     ?>
-                    <input type="text" name="email" class="form-control" id="inputEmail3">
+                    <input type="text" name="email" class="form-control" id="inputEmail3"
+                           value="<?= getF('registration_form','email')?>">
                 </div>
             </div>
             <div class="row mb-3">

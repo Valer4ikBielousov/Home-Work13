@@ -1,6 +1,7 @@
 <?php
-session_start();
+
 require __DIR__ . '/functions/functions.php';
+
 
 if (!(chekAuth('auth'))) {
     header('location: http://home-work13');

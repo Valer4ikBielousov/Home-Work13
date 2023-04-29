@@ -3,7 +3,7 @@
 // require from database "bloger" with PHP (PDO) on mySQL
 require_once __DIR__ . "/../db.php";
 
-function validation(array $fields, array $rules, $savedEmail)
+function validation(array $fields, array $rules, PDO $savedEmail)
 {
     $errors = [];
     if (!$rules)
@@ -172,5 +172,6 @@ function chekfreeEmail($newEmail, $savedEmail)
     }
     return false;
 }
+
 
 
