@@ -1,12 +1,9 @@
 <?php
 session_start();
 require __DIR__ . '/functions/functions.php';
-require_once  __DIR__ . '/database_functions.php';
+require_once __DIR__ . '/functions/database_functions.php';
 //require_once __DIR__ . '/controllers/registration.php';
-//echo getUserIp();
-//echo '<br>';
-//echo getUserAgent();
-//exit();
+
 ?>
 <!doctype html>
 <html lang="en">
@@ -25,7 +22,7 @@ require_once  __DIR__ . '/database_functions.php';
 
                     <a style="font-size: 36px"type="button" onclick="window.location.href = '/closed.php';"
                        class="btn btn-secondary">Blog</a>
-                    <a style="font-size: 36px"type="button" onclick="window.location.href = '/controler.php';"
+                    <a style="font-size: 36px"type="button" onclick="window.location.href = '/controllers/exitControler.php';"
                        class="btn btn-secondary">Exit</a>
                     <?php } ?>
                 </nav>

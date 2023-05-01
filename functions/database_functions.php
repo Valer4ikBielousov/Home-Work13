@@ -1,4 +1,9 @@
 <?php
+/**save data new user in database
+ * @param PDO $savedUser
+ * @param array $data
+ * @return false|string
+ */
 function registrationUser (PDO $savedUser, array $data)
 {
     try {
@@ -11,6 +16,11 @@ function registrationUser (PDO $savedUser, array $data)
     }
 }
 
+/** save new session on database with new user
+ * @param PDO $savedUser
+ * @param array $data
+ * @return false|string
+ */
 function createSession (PDO $savedUser, array $data)
 {
     try {
@@ -34,7 +44,7 @@ function chekAuth(): bool
         return false;
     }
 
-    require_once __DIR__ . './db.php';
+    require_once __DIR__ . '/../db.php';
     $session = getSession($bloger, $token);
     if (!$session) {
         return false;
@@ -60,6 +70,11 @@ function getSession(PDO $savedSession, string $savedToken)
     return $row;
 }
 
+/** chek if email exist in database
+ * @param $savedUser
+ * @param $userEmail
+ * @return mixed
+ */
 function chekUserExist ($savedUser, $userEmail)
 {
     $query = "SELECT COUNT(`id`) as `counter` from `users`  WHERE `email` = ?";
@@ -68,6 +83,11 @@ function chekUserExist ($savedUser, $userEmail)
     return $stmt->fetch()['counter'];
 }
 
+/** chek  if password exist in database
+ * @param PDO $savedUser
+ * @param string $userEmail
+ * @return string|null
+ */
 function chekUserPass(PDO $savedUser, string $userEmail): ?string
 {
     $query = "SELECT `password` FROM `users` WHERE `email` = ?";
@@ -76,6 +96,12 @@ function chekUserPass(PDO $savedUser, string $userEmail): ?string
     $row = $stmt->fetch(PDO::FETCH_ASSOC)['password'];;
     return $row;
 }
+
+/** unset data from session
+ * @param PDO $savedSession
+ * @param string $savedToken
+ * @return true|void
+ */
 function unsetBdSession(PDO $savedSession, string $savedToken)
 {
     try {
@@ -87,4 +113,20 @@ function unsetBdSession(PDO $savedSession, string $savedToken)
         return true;
     }
 
+}
+/** unset data from cookie
+ * @return bool
+ */
+function unchekAuth(): bool
+{
+
+    $token = $_COOKIE['auth'] ?? false;
+    if (!$token) {
+        return false;
+    }
+
+    require_once __DIR__ . '/../db.php';
+    unsetBdSession($bloger, $token);
+    session_destroy();
+    return true;
 }
