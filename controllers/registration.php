@@ -20,7 +20,7 @@ setF($_POST, 'registration_form');
 
 //declare a type of errors on validation form
 $bugName = [
-    'Name' => 'required|min_lenghth[2]|max_lenghth[15]',
+    'Name' => 'required|min_lenghth[2]|max_lenghth[30]',
     'lastName' => 'required|min_lenghth[2]|max_lenghth[15]',
     'email' => 'required|email|min_lenghth[6]|max_lenghth[25]|freeEmail',
     'password' => 'required|min_lenghth[4]|max_lenghth[25]|symbol',
@@ -41,17 +41,39 @@ foreach ($bugArray as $bugField => $bugindex) {
     }
 }
 $userData = [
+    'role_id' => 2,
     'name' => $_POST['Name'],
     'email' => $_POST['email'],
     'password' => password_hash($_POST['password'], PASSWORD_BCRYPT)
 ];
 
-
+$userId = registrationUser ( $bloger, $userData);
 // save new user
 
-registrationUser ( $bloger, $userData);
+if (!$userId){
+    setAlerts('Data base error!', 'warnings');
+    header('location:' . SITE_REGISTRATION);
+    exit;
+};
+
+$token = generatrToken($userId);
+$sessionData = [
+    'user_id' => $userId,
+    'token' => $token,
+    'user_agent' => getUserAgent(),
+    'ip' => getUserIp()
+];
+$sessionId = createSession ($bloger,  $sessionData);
+
+if (!$sessionId){
+    setAlerts('Data base error!', 'warnings');
+    header('location:' . SITE_REGISTRATION);
+    exit;
+};
+
+setcookie('auth' , $token , time() + (3600*24*7), '/');
 // redirect to closed page
 
-header('location:' . SITE_CLOSED);
+header('location:' . SITE_LOGIN);
 
 

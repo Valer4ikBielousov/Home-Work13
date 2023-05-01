@@ -1,19 +1,47 @@
 <?php
 session_start();
 require __DIR__ . '/functions/functions.php';
+require_once  __DIR__ . '/database_functions.php';
 //require_once __DIR__ . '/controllers/registration.php';
-
+//echo getUserIp();
+//echo '<br>';
+//echo getUserAgent();
+//exit();
 ?>
 <!doctype html>
 <html lang="en">
 <head>
+    <div class="shadow-lg p-3 mb-5 bg-body rounded">
+        <div class="p-3 mb-2 bg-secondary text-white" ">
+            <header>MENU
+                <div style="display: flex; justify-content: center; ">
+                <nav>
+                    <?php if (!chekAuth()) {?>
+                    <a style="font-size: 36px" type="button" onclick="window.location.href = '/index.php';"
+                       class="btn btn-secondary">Registration</a>
+                    <a style="font-size: 36px"type="button" onclick="window.location.href = '/login.php';"
+                       class="btn btn-secondary">Login</a>
+                    <?php } else{?>
+
+                    <a style="font-size: 36px"type="button" onclick="window.location.href = '/closed.php';"
+                       class="btn btn-secondary">Blog</a>
+                    <a style="font-size: 36px"type="button" onclick="window.location.href = '/controler.php';"
+                       class="btn btn-secondary">Exit</a>
+                    <?php } ?>
+                </nav>
+                </div>
+            </header>
+        </div>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Bootstrap demo</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+
 </head>
+
 <body>
+
 <div class="container text-center" style=" margin-top: 200px;">
     <?php if (existMesseges('warnings')) { ?>
         <div class="alert alert-danger" role="alert">
@@ -117,7 +145,8 @@ require __DIR__ . '/functions/functions.php';
                     <input type="password" name="confirmPassword" class="form-control" id="inputPassword4">
                 </div>
             </div>
-            <button type="submit" class="btn btn-secondary">Sign in</button>
+            <button type="submit" class="btn btn-secondary">Registration</button>
+
         </form>
     </div>
 

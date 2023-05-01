@@ -18,7 +18,7 @@ require __DIR__ . '/functions/functions.php';
         <div class="p-3 mb-2 bg-secondary text-white">
             <h1>Login form</h1>
         </div>
-        <form action="controllers/registration.php" method="POST">
+        <form action="controllers/login_control.php" method="POST">
             <div class="row g-3">
                 <div class="col" style=" margin-top: 20px ">
                     <label for="inputPassword3" class="col-sm-2 col-form-label">Write your email</label>

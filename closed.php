@@ -1,10 +1,12 @@
 <?php
 
-require __DIR__ . '/functions/functions.php';
+require_once __DIR__ . '/config.php';
+require_once  __DIR__ . '/database_functions.php';
 
 
-if (!(chekAuth('auth'))) {
-    header('location: http://home-work13');
+if (!chekAuth()) {
+    header('location:' . SITE_REGISTRATION);
+    exit;
 }
 
 ?>

@@ -56,15 +56,7 @@ function unsetMesseges(string $type):void
     unset ($_SESSION[$type]);
 }
 
-/**
- * check if user was regestrated
- * @param $key
- * @return array|bool
- */
-function chekAuth($key):array|bool
-{
-    return $_COOKIE[$key] ?? false;
-}
+
 
 
 /** Set value of Field Name into session
@@ -85,4 +77,27 @@ function setF(array $F, string $type_F): void
 function getF(string $type_F,string $key) :string
 {
     return $_SESSION[$type_F][$key] ?? '';
+}
+
+function generatrToken($id)
+{
+    $time = time();
+    $randId = rand(1000, 9999);
+    return hash('md5',$id . $randId . $time);
+}
+
+/** Get user ip
+ * @return string
+ */
+function getUserIp (): string
+{
+    return $_SERVER['REMOTE_ADDR'];
+}
+
+/**get user system type
+ * @return string
+ */
+function getUserAgent(): string
+{
+    return $_SERVER['HTTP_USER_AGENT'];
 }
