@@ -14,15 +14,22 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     setAlerts('Method not allowed!', 'warnings');
     header('location:' . SITE_REGISTRATION);
 }
+$filters = [
+    'Name' => FILTER_SANITIZE_SPECIAL_CHARS,
+    'lastName' => FILTER_SANITIZE_SPECIAL_CHARS,
+    'email'=>FILTER_SANITIZE_EMAIL,
+    'password'=>FILTER_SANITIZE_SPECIAL_CHARS,
+    'confirmPassword'=>FILTER_SANITIZE_SPECIAL_CHARS
+];
+$filteredPost = filterPostArray($filters);
 
-print_r(chekUserPass($bloger,$_POST['email']));
 
-if (!chekUserExist($bloger, $_POST['email'])){
+if (!chekUserExist($bloger, post('email','email'))){
     header('location:' . SITE_REGISTRATION);
     exit;
 }
 
-if (!(password_verify($_POST['password'], chekUserPass($bloger,$_POST['email'])))){
+if (!(password_verify($filteredPost['password'], chekUserPass($bloger,post('email','email'))))){
     header('location:' . SITE_REGISTRATION);
     exit;
 }

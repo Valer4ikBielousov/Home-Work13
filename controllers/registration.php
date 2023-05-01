@@ -15,8 +15,19 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header('location:' . SITE_REGISTRATION);
 }
 
+// parametr for function filterPostArray with type of filter to fields
+$filters = [
+    'Name' => FILTER_SANITIZE_SPECIAL_CHARS,
+    'lastName' => FILTER_SANITIZE_SPECIAL_CHARS,
+    'email'=>FILTER_SANITIZE_EMAIL,
+    'password'=>FILTER_SANITIZE_SPECIAL_CHARS,
+    'confirmPassword'=>FILTER_SANITIZE_SPECIAL_CHARS
+];
+//function to filter POST array
+$filteredPost = filterPostArray($filters);
+
 //Set value of Field Name into session
-setF($_POST, 'registration_form');
+setF($filteredPost, 'registration_form');
 
 //declare a type of errors on validation form
 $bugName = [
@@ -30,7 +41,7 @@ $bugName = [
 
 // set validation errors messages into Session
 
-$bugArray = validation($_POST, $bugName, $bloger);
+$bugArray = validation($filteredPost, $bugName, $bloger);
 foreach ($bugArray as $bugField => $bugindex) {
     if (isset($bugindex)) {
         foreach ($bugindex as $bugMassages) {
@@ -40,11 +51,12 @@ foreach ($bugArray as $bugField => $bugindex) {
         exit;
     }
 }
+
 $userData = [
     'role_id' => 2,
-    'name' => $_POST['Name'],
-    'email' => $_POST['email'],
-    'password' => password_hash($_POST['password'], PASSWORD_BCRYPT)
+    'name' => $filteredPost['Name'],
+    'email' => $filteredPost['email'],
+    'password' => password_hash($filteredPost['password'], PASSWORD_BCRYPT)
 ];
 
 $userId = registrationUser ( $bloger, $userData);
@@ -54,7 +66,7 @@ if (!$userId){
     setAlerts('Data base error!', 'warnings');
     header('location:' . SITE_REGISTRATION);
     exit;
-};
+}
 
 $token = generatrToken($userId);
 $sessionData = [
@@ -69,7 +81,7 @@ if (!$sessionId){
     setAlerts('Data base error!', 'warnings');
     header('location:' . SITE_REGISTRATION);
     exit;
-};
+}
 
 setcookie('auth' , $token , time() + (3600*24*7), '/');
 // redirect to closed page

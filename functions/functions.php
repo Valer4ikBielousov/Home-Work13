@@ -27,9 +27,9 @@ function setAlerts(string $messege, string|array $type = 'alerts'): void
 /**
  *Get my message from session
  * @param string|array $type
- * @return array
+ * @return array|string
  */
-function getMesseges(string $type): array
+function getMesseges(string $type): array|string
 {
     $messeges = $_SESSION[$type] ?? [];
 
@@ -38,7 +38,7 @@ function getMesseges(string $type): array
 
 /**
  *check if session for $type exist
- * @param string|array $type
+ * @param string $type
  * @return bool
  */
 function existMesseges(string $type): bool
@@ -51,12 +51,10 @@ function existMesseges(string $type): bool
  * @param string $type
  * @return void
  */
-function unsetMesseges(string $type):void
+function unsetMesseges(string $type): void
 {
     unset ($_SESSION[$type]);
 }
-
-
 
 
 /** Set value of Field Name into session
@@ -74,22 +72,22 @@ function setF(array $F, string $type_F): void
  * @param string $key
  * @return string
  */
-function getF(string $type_F,string $key) :string
+function getF(string $type_F, string $key): string
 {
     return $_SESSION[$type_F][$key] ?? '';
 }
 
-function generatrToken($id)
+function generatrToken($id): string
 {
     $time = time();
     $randId = rand(1000, 9999);
-    return hash('md5',$id . $randId . $time);
+    return hash('md5', $id . $randId . $time);
 }
 
 /** Get user ip
  * @return string
  */
-function getUserIp (): string
+function getUserIp(): string
 {
     return $_SERVER['REMOTE_ADDR'];
 }
@@ -100,4 +98,45 @@ function getUserIp (): string
 function getUserAgent(): string
 {
     return $_SERVER['HTTP_USER_AGENT'];
+}
+
+/**filter for POST email field
+ * @param string $name
+ * @param $type
+ * @return string
+ */
+function post(string $name, $type = 'default'): string
+{
+    $value = filter_input(INPUT_POST, $name, FILTER_SANITIZE_ADD_SLASHES);
+    $value = htmlspecialchars($value);
+    switch ($type) {
+        case 'email':
+            $value = filter_var($value, FILTER_SANITIZE_EMAIL);
+            break;
+    }
+    return $value;
+}
+
+
+/**filter for POST array
+ * @param array $filters
+ * @return array
+ */
+function filterPostArray(array $filters): array
+{
+    $filteredData = [];
+
+    foreach ($filters as $key => $filter) {
+
+        $value = filter_input(INPUT_POST, $key, $filter);
+        if ($value !== null) {
+            $filteredData[$key] = $value;
+        }
+    }
+
+    return $filteredData;
+}
+function refilter($data)
+{
+    htmlspecialchars_decode($data);
 }
