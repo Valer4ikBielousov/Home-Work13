@@ -138,5 +138,5 @@ function filterPostArray(array $filters): array
 }
 function refilter($data)
 {
-    htmlspecialchars_decode($data);
+    return htmlspecialchars_decode($data);
 }
