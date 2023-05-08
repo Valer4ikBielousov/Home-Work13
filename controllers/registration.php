@@ -86,6 +86,6 @@ if (!$sessionId){
 setcookie('auth' , $token , time() + (3600*24*7), '/');
 // redirect to closed page
 
-header('location:' . SITE_LOGIN);
+header('location:' . SITE_CLOSED);
 
 

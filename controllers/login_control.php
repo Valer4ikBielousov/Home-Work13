@@ -17,20 +17,28 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 $filters = [
     'Name' => FILTER_SANITIZE_SPECIAL_CHARS,
     'lastName' => FILTER_SANITIZE_SPECIAL_CHARS,
-    'email'=>FILTER_SANITIZE_EMAIL,
-    'password'=>FILTER_SANITIZE_SPECIAL_CHARS,
-    'confirmPassword'=>FILTER_SANITIZE_SPECIAL_CHARS
+    'email' => FILTER_SANITIZE_EMAIL,
+    'password' => FILTER_SANITIZE_SPECIAL_CHARS,
+    'confirmPassword' => FILTER_SANITIZE_SPECIAL_CHARS
 ];
 $filteredPost = filterPostArray($filters);
+$userId = getUserbyEmail($bloger, post('email', 'email'));
 
+if (!chekUserExist($bloger, post('email', 'email'))) {
 
-if (!chekUserExist($bloger, post('email','email'))){
     header('location:' . SITE_REGISTRATION);
+    print_r('1');
     exit;
 }
 
-if (!(password_verify($filteredPost['password'], chekUserPass($bloger,post('email','email'))))){
-    header('location:' . SITE_REGISTRATION);
+if ((password_verify($filteredPost['password'], chekUserPass($bloger, post('email', 'email'))))) {
+
+    login($bloger, $userId);
+    header('location:' . SITE_CLOSED);
+} else {
+    setAlerts('email or pass Error!', 'warnings');
+    header('location:' . SITE_LOGIN);
+
     exit;
 }
-header('location:' . SITE_CLOSED);
+

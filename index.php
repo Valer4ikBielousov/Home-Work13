@@ -2,6 +2,7 @@
 session_start();
 require __DIR__ . '/functions/functions.php';
 require_once __DIR__ . '/functions/database_functions.php';
+require_once __DIR__ . '/db.php';
 //require_once __DIR__ . '/controllers/registration.php';
 
 ?>
@@ -13,7 +14,7 @@ require_once __DIR__ . '/functions/database_functions.php';
             <header>MENU
                 <div style="display: flex; justify-content: center; ">
                 <nav>
-                    <?php if (!chekAuth()) {?>
+                    <?php if (!chekAuth($bloger)) {?>
                     <a style="font-size: 36px" type="button" onclick="window.location.href = '/index.php';"
                        class="btn btn-secondary">Registration</a>
                     <a style="font-size: 36px"type="button" onclick="window.location.href = '/login.php';"
