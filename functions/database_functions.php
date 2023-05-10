@@ -34,9 +34,9 @@ function createSession(PDO $savedUser, array $data)
 }
 
 /** check if auth exist in session
- * @return bool
+ * @return int|bool
  */
-function chekAuth(PDO $con): bool
+function chekAuth(PDO $con): int|bool
 {
 
     $token = $_COOKIE['auth'] ?? false;
@@ -49,7 +49,7 @@ function chekAuth(PDO $con): bool
     if (!$session) {
         return false;
     }
-    return true;
+    return $session['user_id'];
 }
 
 /** get Session data from data base
@@ -250,4 +250,22 @@ function countBlogs (PDO $connection):int|false
             return false;
         }
     }
+}
+
+/** save user actions to file: loger.txt
+ * @param PDO $database
+ * @param string $message
+ * @param string $fileName
+ * @return void
+ */
+function logger(PDO $database, string $message, string $fileName = 'loger.txt'):void
+{
+    $currentData = date('d.m.Y / H:i:s');
+    $usernomber = chekAuth($database);
+    $message = "[$currentData][ user #$usernomber ][ $message ]" . PHP_EOL;
+
+    $file = fopen($_SERVER['DOCUMENT_ROOT'].'/controllers/'.$fileName,'a');
+    fwrite($file,$message);
+    fclose($file);
+
 }

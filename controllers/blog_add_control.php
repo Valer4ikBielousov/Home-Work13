@@ -48,19 +48,23 @@ foreach ($bugArray as $bugField => $bugindex) {
 }
 
 
-if (fileMoveTo($_FILES['image'], '../storage/blogs')){
-    $data =[
+if (fileMoveTo($_FILES['image'], '../storage/blogs')) {
+    $data = [
         'tittle' => post('tittle'),
         'content' => post('content'),
         'author_id' => post('author_id', 'int'),
         'image' => 'storage/blogs' . $_FILES['image']['name']
     ];
 
-    blog_add($bloger, $data);
-    $blogs =getAllBlogs($bloger);
 
-    header('location:' . SITE_CLOSED);
-}else{setAlerts('File errors', 'warnings');
+    if ($blogid = blog_add($bloger, $data)) {
+
+        logger($bloger,"blog #$blogid added");
+        header('location:' . SITE_CLOSED);
+    }
+
+} else {
+    setAlerts('File errors', 'warnings');
     header('location:' . SITE_BLOGS);
 
 }
