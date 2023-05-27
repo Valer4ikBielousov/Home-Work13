@@ -26,10 +26,10 @@ function setAlerts(string $messege, string|array $type = 'alerts'): void
 
 /**
  *Get my message from session
- * @param string|array $type
+ * @param array|string $type
  * @return array|string
  */
-function getMesseges(string $type): array|string
+function getMesseges(array|string $type): array|string
 {
     $messeges = $_SESSION[$type] ?? [];
 
@@ -102,10 +102,10 @@ function getUserAgent(): string
 
 /**filter for POST email field
  * @param string $name
- * @param $type
+ * @param string $type
  * @return string
  */
-function post(string $name, $type = 'default'): string
+function post(string $name, string $type = 'default'): string
 {
     $value = filter_input(INPUT_POST, $name, FILTER_SANITIZE_ADD_SLASHES);
     $value = htmlspecialchars($value);

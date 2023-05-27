@@ -7,20 +7,15 @@ require_once __DIR__ . '/../functions/database_functions.php';
 
 // require from database "bloger" with PHP (PDO) on mySQL
 require_once __DIR__ . "/../db.php";
+$connect = connect();
 
-
-// set REQUEST_METHOD errors into Session
-//if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-//    setAlerts('Method not allowed!', 'warnings');
-//    header('location:' . SITE_BLOGS);
-//}
-
-// parametr for function filterPostArray with type of filter to fields
+// parametrs for function filterPostArray with type of filter to fields
 $filters = [
     'tittle' => FILTER_SANITIZE_SPECIAL_CHARS,
     'content' => FILTER_SANITIZE_SPECIAL_CHARS,
     'author_id' => FILTER_SANITIZE_SPECIAL_CHARS,
 ];
+
 //function to filter POST array
 $filteredPost = filterPostArray($filters);
 
@@ -35,8 +30,7 @@ $bugName = [
 ];
 
 // set validation errors messages into Session
-
-$bugArray = validation($filteredPost, $bugName, $bloger);
+$bugArray = validation($filteredPost, $bugName, $connect);
 foreach ($bugArray as $bugField => $bugindex) {
     if (isset($bugindex)) {
         foreach ($bugindex as $bugMassages) {
@@ -47,19 +41,19 @@ foreach ($bugArray as $bugField => $bugindex) {
     }
 }
 
-
-if (fileMoveTo($_FILES['image'], '../storage/blogs')) {
+// set new blog into database 'bloger' and save new note into loger
+if (fileMoveTo($_FILES['image'], '../storage/blogs/')) {
     $data = [
         'tittle' => post('tittle'),
         'content' => post('content'),
         'author_id' => post('author_id', 'int'),
-        'image' => 'storage/blogs' . $_FILES['image']['name']
+        'image' => '/storage/blogs/' . $_FILES['image']['name']
     ];
 
 
-    if ($blogid = blog_add($bloger, $data)) {
+    if ($blogid = blog_add($connect, $data)) {
 
-        logger($bloger,"blog #$blogid added");
+        logger($connect, "blog #$blogid added");
         header('location:' . SITE_CLOSED);
     }
 

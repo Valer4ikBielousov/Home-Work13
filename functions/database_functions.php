@@ -2,9 +2,9 @@
 /**save data new user in database
  * @param PDO $savedUser
  * @param array $data
- * @return false|string
+ * @return string|bool
  */
-function registrationUser(PDO $savedUser, array $data)
+function registrationUser(PDO $savedUser, array $data): string|bool
 {
     try {
         $query = "INSERT INTO `USERS` (`role_id` , `name`, `email`, `password`) VALUES (:role_id , :name, :email,:password)";
@@ -19,9 +19,9 @@ function registrationUser(PDO $savedUser, array $data)
 /** save new session on database with new user
  * @param PDO $savedUser
  * @param array $data
- * @return false|string
+ * @return string|bool
  */
-function createSession(PDO $savedUser, array $data)
+function createSession(PDO $savedUser, array $data): string|bool
 {
     try {
         $query = "INSERT INTO `user_session` (`user_id` , `token`, `user_agent`, `ip`) VALUES (:user_id , :token, :user_agent,:ip)";
@@ -34,6 +34,7 @@ function createSession(PDO $savedUser, array $data)
 }
 
 /** check if auth exist in session
+ * @param PDO $con
  * @return int|bool
  */
 function chekAuth(PDO $con): int|bool
@@ -70,7 +71,12 @@ function getSession(PDO $savedSession, string $savedToken)
     return $row;
 }
 
-function getUserbyEmail(PDO $connection, string $email)
+/**
+ * @param PDO $connection
+ * @param string $email
+ * @return false|mixed
+ */
+function getUserbyEmail(PDO $connection, string $email): mixed
 {
     try {
         $query = "SELECT `id`, `email` , `password` FROM `users` WHERE `email` = ?";
@@ -88,7 +94,7 @@ function getUserbyEmail(PDO $connection, string $email)
  * @param $userEmail
  * @return mixed
  */
-function chekUserExist($savedUser, $userEmail)
+function chekUserExist($savedUser, $userEmail): mixed
 {
     $query = "SELECT COUNT(`id`) as `counter` from `users`  WHERE `email` = ?";
     $stmt = $savedUser->prepare($query);
@@ -101,7 +107,7 @@ function chekUserExist($savedUser, $userEmail)
  * @param string $userEmail
  * @return string|null
  */
-function chekUserPass(PDO $savedUser, string $userEmail): ?string
+function chekUserPass(PDO $savedUser, string $userEmail): string|null
 {
     $query = "SELECT `password` FROM `users` WHERE `email` = ?";
     $stmt = $savedUser->prepare($query);
@@ -113,7 +119,7 @@ function chekUserPass(PDO $savedUser, string $userEmail): ?string
 /** unset data from session
  * @param PDO $savedSession
  * @param string $savedToken
- * @return true|void
+ * @return void
  */
 function unsetBdSession(PDO $savedSession, string $savedToken)
 {
@@ -129,6 +135,7 @@ function unsetBdSession(PDO $savedSession, string $savedToken)
 }
 
 /** unset data from cookie
+ * @param $con
  * @return bool
  */
 function unchekAuth($con): bool
@@ -145,6 +152,11 @@ function unchekAuth($con): bool
     return true;
 }
 
+/** create token for new user and set it into cookie
+ * @param PDO $connect
+ * @param $userId
+ * @return void
+ */
 function login(PDO $connect, $userId): void
 {
     $token = generatrToken($userId['email']);
@@ -167,7 +179,7 @@ function login(PDO $connect, $userId): void
  * @param PDO $connection
  * @return array|false
  */
-function getAllUser(PDO $connection):array
+function getAllUser(PDO $connection): array|false
 {
     try {
         $query = "SELECT `id`, `name` FROM `users`";
@@ -185,7 +197,7 @@ function getAllUser(PDO $connection):array
  * @param $data
  * @return false|string
  */
-function blog_add(PDO $connect, $data)
+function blog_add(PDO $connect, $data): false|string
 {
     try {
         $query = "INSERT INTO `blogs` (`author_id`, `tittle`, `image`, `content`) VALUES (:author_id, :tittle,:image,:content)";
@@ -197,31 +209,36 @@ function blog_add(PDO $connect, $data)
     }
 }
 
-function fileMoveTo ($file, $to)
+/** move file to directory /storage/blogs
+ * @param $file
+ * @param $to
+ * @return bool
+ */
+function fileMoveTo($file, $to): bool
 {
-    if (!file_exists($to)){
+    if (!file_exists($to)) {
         mkdir($to);
     }
-    if ($file['error']){
+    if ($file['error']) {
         return false;
     }
     $filename = $file['name'];
     $tmp_name = $file['tmp_name'];
 
-    return move_uploaded_file($tmp_name,"$to/$filename");
+    return move_uploaded_file($tmp_name, "$to/$filename");
 }
 
 /** get blogs from data base
  * @param PDO $connection
- * @param $perPage
- * @param $offset
+ * @param mixed $perPage
+ * @param mixed $offset
  * @return array|false
  */
-function getAllBlogs(PDO $connection, $perPage = false, $offset = false):array
+function getAllBlogs(PDO $connection, mixed $perPage = false, mixed $offset = false): array|false
 {
     try {
         $query = "SELECT * FROM `blogs`";
-        if ($perPage !== false && $offset!== false){
+        if ($perPage !== false && $offset !== false) {
             $query .= "LIMIT $offset, $perPage";
         }
         $stmt = $connection->prepare($query);
@@ -237,7 +254,7 @@ function getAllBlogs(PDO $connection, $perPage = false, $offset = false):array
  * @param PDO $connection
  * @return int|false
  */
-function countBlogs (PDO $connection):int|false
+function countBlogs(PDO $connection): int|false
 {
     {
         try {
@@ -258,14 +275,14 @@ function countBlogs (PDO $connection):int|false
  * @param string $fileName
  * @return void
  */
-function logger(PDO $database, string $message, string $fileName = 'loger.txt'):void
+function logger(PDO $database, string $message, string $fileName = 'loger.txt'): void
 {
     $currentData = date('d.m.Y / H:i:s');
     $usernomber = chekAuth($database);
     $message = "[$currentData][ user #$usernomber ][ $message ]" . PHP_EOL;
 
-    $file = fopen($_SERVER['DOCUMENT_ROOT'].'/controllers/'.$fileName,'a');
-    fwrite($file,$message);
+    $file = fopen($_SERVER['DOCUMENT_ROOT'] . '/controllers/' . $fileName, 'a');
+    fwrite($file, $message);
     fclose($file);
 
 }

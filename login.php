@@ -14,7 +14,7 @@ require __DIR__ . '/functions/functions.php';
 </head>
 <body>
 <div class="container text-center" style=" margin-top: 200px;">
-       <div class="shadow-lg p-3 mb-5 bg-body rounded">
+    <div class="shadow-lg p-3 mb-5 bg-body rounded">
         <div class="p-3 mb-2 bg-secondary text-white">
             <h1>Login form</h1>
         </div>
@@ -28,24 +28,21 @@ require __DIR__ . '/functions/functions.php';
                        aria-label="email" placeholder="email">
             </div>
             <div class="col" style=" margin-bottom: 20px">
-
-                <label for="inputPassword3" class="col-sm-2 col-form-label">Write your Password</label>
                 <div class="col-sm-10">
-
+                    <label for="inputPassword3" class="col-sm-2 col-form-label">Write your Password</label>
                 </div>
-
                 <input type="password" name="password" class="form-control" placeholder="password" id="inputPassword3">
             </div>
+
+
             <button type="submit" class="btn btn-secondary">Sign in</button>
+        </form>
     </div>
 
-
-    </form>
 </div>
-
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
         crossorigin="anonymous"></script>
-</div>
+
 </body>
 </html>

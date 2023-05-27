@@ -3,28 +3,13 @@ session_start();
 require __DIR__ . '/functions/functions.php';
 require_once __DIR__ . '/functions/database_functions.php';
 require_once __DIR__ . '/db.php';
-
-$users = getAllUser($bloger);
+$connect = connect();
+$users = getAllUser($connect);
 
 ?>
 <!doctype html>
 <html lang="en">
 <head>
-    <div class="shadow-lg p-3 mb-5 bg-body rounded">
-        <div class="p-3 mb-2 bg-secondary text-white"
-        ">
-        <header>MENU
-            <div style="display: flex; justify-content: center; ">
-                <nav>
-
-                    <a style="font-size: 36px" type="button"
-                       onclick="window.location.href = '/controllers/exitControler.php';"
-                       class="btn btn-secondary">Exit</a>
-
-                </nav>
-            </div>
-        </header>
-    </div>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Bootstrap demo</title>
@@ -32,8 +17,21 @@ $users = getAllUser($bloger);
           integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 
 </head>
-
 <body>
+<div class="shadow-lg p-3 mb-5 bg-body rounded">
+    <div class="p-3 mb-2 bg-secondary text-white">
+        <header>MENU</header>
+        <div style="display: flex; justify-content: center; ">
+            <nav>
+
+                <a style="font-size: 36px" type="button"
+                   onclick="window.location.href = '/controllers/exitControler.php';"
+                   class="btn btn-secondary">Exit</a>
+
+            </nav>
+        </div>
+    </div>
+</div>
 
 <div class="container text-center" style=" margin-top: 200px;">
     <?php if (existMesseges('warnings')) { ?>
@@ -56,7 +54,6 @@ $users = getAllUser($bloger);
                             <?php
                             foreach ((getMesseges('tittle')) as $bugMassage) {
                                 echo "$bugMassage<br>";
-//                                unsetMesseges('Name');
                             } ?>
                         </div>
                     <?php } ?>
@@ -102,9 +99,7 @@ $users = getAllUser($bloger);
             <?php
             unsetMesseges('tittle');
             unsetMesseges('content');
-
             unsetMesseges('warnings');
-            //                    unsetMesseges('warn');
             ?>
             <button type="submit" class="btn btn-secondary">ADD</button>
         </form>

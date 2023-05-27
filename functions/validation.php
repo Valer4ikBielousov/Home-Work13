@@ -3,7 +3,7 @@
 // require from database "bloger" with PHP (PDO) on mySQL
 require_once __DIR__ . "/../db.php";
 
-function validation(array $fields, array $rules, PDO $savedEmail)
+function validation(array $fields, array $rules,  $savedEmail)
 {
     $errors = [];
     if (!$rules)
@@ -159,10 +159,10 @@ function confirmPassword(string $password, string $passwordConfirm): bool
 
 /** check if email exist in database blogers
  * @param string $newEmail
- * @param class-string $savedEmail
+ * @param PDO $savedEmail
  * @return bool
  */
-function chekfreeEmail($newEmail, $savedEmail)
+function chekfreeEmail(string $newEmail, PDO $savedEmail): bool
 {
     $query = "SELECT `email` FROM `users` WHERE `email` = ?";
     $stmt = $savedEmail->prepare($query);
